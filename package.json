@@ -20,7 +20,7 @@
     "react-scripts": "^5.0.1",
     "react-ticker": "^1.2.2",
     "web-vitals": "^1.1.2",
-    "@azure/ai-text-analytics": "^5.2.0"
+    "@azure/ai-text-analytics": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
