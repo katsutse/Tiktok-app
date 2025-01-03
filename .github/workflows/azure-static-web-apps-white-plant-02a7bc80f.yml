@@ -26,7 +26,10 @@ jobs:
           node-version: '18'
 
       - name: Install Latest Dependencies
-        run: npm install -g npm@latest && npm install
+        run: |
+          npm install -g npm@latest
+          npm install
+          npm install @azure/ai-text-analytics@latest # Install the latest version of the package
 
       - name: Build And Deploy
         id: builddeploy
