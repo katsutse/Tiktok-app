@@ -15,6 +15,7 @@ function App() {
   const [filteredVideos, setFilteredVideos] = useState([]); // Filtered videos
   const [searchQuery, setSearchQuery] = useState(""); // Search query
   const [signupForm, setSignupForm] = useState(true); // Toggle between signup and login
+  const [forgotPassword, setForgotPassword] = useState(false); // State to toggle forgot password form
   const [formState, setFormState] = useState({
     username: "",
     email: "",
@@ -230,6 +231,30 @@ function App() {
     localStorage.removeItem("authToken"); // Remove token from local storage
   };
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    const { email } = formState;
+    try {
+      const response = await fetch("http://localhost:5000/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Password reset instructions have been sent to your email.");
+        setForgotPassword(false);
+      } else {
+        alert(data.message || "Error resetting password");
+      }
+    } catch (error) {
+      console.error("Error during password reset:", error);
+    }
+  };
+
   return (
     <div
       className="app"
@@ -283,14 +308,40 @@ function App() {
             </div>
             <button type="submit">{signupForm ? "Sign Up" : "Log In"}</button>
           </form>
-          <p
-            className="toggle_form"
-            onClick={() => setSignupForm(!signupForm)}
-          >
-            {signupForm
-              ? "Already have an account? Log In"
-              : "Don't have an account? Sign Up"}
-          </p>
+          {signupForm && (
+            <p
+              className="toggle_form"
+              onClick={() => setSignupForm(!signupForm)}
+            >
+              Already have an account? Log In
+            </p>
+          )}
+          {!signupForm && (
+            <>
+              <p
+                className="forgot-password"
+                onClick={() => setForgotPassword(!forgotPassword)}
+              >
+                Forgot Password?
+              </p>
+              {forgotPassword && (
+                <div className="forgot-password-form">
+                  <h3>Reset your password</h3>
+                  <form onSubmit={handleForgotPassword}>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Enter your email"
+                      value={formState.email}
+                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                      required
+                    />
+                    <button type="submit">Send Reset Link</button>
+                  </form>
+                </div>
+              )}
+            </>
+          )}
         </div>
       ) : (
         <div className="main-content">
@@ -353,6 +404,7 @@ function App() {
                   description={video.description}
                   song={video.song}
                   likes={video.likes}
+                  messages={video.messages}
                   shares={video.shares}
                   comments={video.comments}
                   videoId={video.id}
