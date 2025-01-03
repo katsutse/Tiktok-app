@@ -45,9 +45,9 @@ const Video = ({
       <video
         className="video_player"
         loop
-        preload="auto" // Preload the video as needed
+        preload="auto" // Preload the video 
         ref={videoRef}
-        onClick={onVideoClick} // Toggle play/pause on video click
+        onClick={onVideoClick} // Toggle play/pause
         src={url}
         muted={!isPlaying} // Mute when not playing
       />
