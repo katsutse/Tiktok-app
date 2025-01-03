@@ -20,28 +20,33 @@ const Video = ({
   const videoRef = useRef(null);
 
   const onVideoClick = () => {
-    onPlayPause(videoId); // Use the passed down onPlayPause function from parent
+    onPlayPause(videoId); // Toggle the play/pause state for the specific video
   };
 
   useEffect(() => {
     if (videoRef.current) {
       if (isPlaying) {
-        videoRef.current.play().catch(() => console.log("Error playing video"));
+        videoRef.current
+          .play()
+          .catch((error) => {
+            console.error(`Error playing video (videoId: ${videoId}):`, error);
+          });
       } else {
-        videoRef.current.pause();
+        videoRef.current.pause(); // Ensure video is paused when not playing
       }
     }
-  }, [isPlaying]); // Correctly include `isPlaying` in the dependencies array
+  }, [isPlaying, videoId]); // Ensure the effect runs when isPlaying or videoId changes
 
   return (
     <div className="video">
       <video
         className="video_player"
         loop
-        preload="true"
+        preload="auto" // Using 'auto' to preload the video as needed
         ref={videoRef}
-        onClick={onVideoClick}
+        onClick={onVideoClick} // Handle video play/pause when clicked
         src={url}
+        muted={!isPlaying} // Optionally mute the video if not playing
       ></video>
       <VideoFooter channel={channel} description={description} song={song} />
       <VideoSidebar
@@ -50,7 +55,7 @@ const Video = ({
         shares={shares}
         comments={comments}
       />
-      {!isPlaying && <VideoPlayButton onVideoClick={onVideoClick} />}
+      {!isPlaying && <VideoPlayButton onVideoClick={onVideoClick} />} {/* Show play button when not playing */}
     </div>
   );
 };
