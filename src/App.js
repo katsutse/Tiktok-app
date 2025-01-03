@@ -6,8 +6,8 @@ import background from "./assets/background1.jpg";
 import videoBackground from "./assets/video-background.jpg";
 
 // Azure credentials
-const endpoint = "https://kafai.cognitiveservices.azure.com/"; // Replace with your endpoint
-const apiKey = "6pY4MAYPwxmi6ZA0XonWT5o1kQSKaAinyy2fn0aQfDKFMp7qkhkTJQQJ99ALACBsN54XJ3w3AAAAACOGsLWb"; // Replace with your API key
+const endpoint = "https://kafai.cognitiveservices.azure.com/"; 
+const apiKey = "6pY4MAYPwxmi6ZA0XonWT5o1kQSKaAinyy2fn0aQfDKFMp7qkhkTJQQJ99ALACBsN54XJ3w3AAAAACOGsLWb"; 
 const client = new TextAnalyticsClient(endpoint, new AzureKeyCredential(apiKey));
 
 function App() {
