@@ -23,11 +23,11 @@ jobs:
       - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '18'  # Keep Node.js version 18
 
-      - name: Install Latest Dependencies
+      - name: Install Compatible npm Version
         run: |
-          npm install -g npm@latest
+          npm install -g npm@9  # Install npm 9 which is compatible with Node.js 18
           npm install
           npm install @azure/ai-text-analytics@latest # Install the latest version of the package
 
