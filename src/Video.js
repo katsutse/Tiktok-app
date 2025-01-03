@@ -1,63 +1,50 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Video.css";
 import VideoFooter from "./VideoFooter";
 import VideoSidebar from "./VideoSidebar";
+import useElementOnScreen from './hooks/useElementOnScreen'
 import VideoPlayButton from "./VideoPlayButton";
-
-const Video = ({
-  url,
-  channel,
-  description,
-  song,
-  likes,
-  messages,
-  shares,
-  comments,
-  videoId,
-  isPlaying,
-  onPlayPause,
-}) => {
+const Video = ({ url, channel, description, song, likes, messages, shares }) => {
+  const [playing, setPlaying] = useState(false);
   const videoRef = useRef(null);
-
+  const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.3
+  }
+  const isVisibile = useElementOnScreen(options, videoRef)
   const onVideoClick = () => {
-    onPlayPause(videoId); // Toggle the play/pause state for the specific video
+    if (playing) {
+      videoRef.current.pause();
+      setPlaying(!playing);
+    } else {
+      videoRef.current.play();
+      setPlaying(!playing);
+    }
   };
-
   useEffect(() => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current
-          .play()
-          .catch((error) => {
-            console.error(`Error playing video (videoId: ${videoId}):`, error);
-          });
-      } else {
-        videoRef.current.pause(); // Ensure video is paused when not playing
+    if (isVisibile) {
+      if (!playing) {        
+        videoRef.current.play();
+        setPlaying(true)
       }
     }
-  }, [isPlaying, videoId]); // Ensure the effect runs when isPlaying or videoId changes
+    else {
+      if (playing) {        
+        videoRef.current.pause();
+        setPlaying(false)
+      }
+    }
+  }, [isVisibile])
+
 
   return (
     <div className="video">
-      <video
-        className="video_player"
-        loop
-        preload="auto" // Using 'auto' to preload the video as needed
-        ref={videoRef}
-        onClick={onVideoClick} // Handle video play/pause when clicked
-        src={url}
-        muted={!isPlaying} // Optionally mute the video if not playing
-      ></video>
+      <video className="video_player" loop preload="true" ref={videoRef} onClick={onVideoClick} src={url}></video>
       <VideoFooter channel={channel} description={description} song={song} />
-      <VideoSidebar
-        likes={likes}
-        messages={messages}
-        shares={shares}
-        comments={comments}
-      />
-      {!isPlaying && <VideoPlayButton onVideoClick={onVideoClick} />} {/* Show play button when not playing */}
+      <VideoSidebar likes={likes} messages={messages} shares={shares} />
+      {!playing && <VideoPlayButton onVideoClick={onVideoClick} />}
     </div>
   );
 };
-
 export default Video;
