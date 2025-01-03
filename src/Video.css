@@ -1,0 +1,103 @@
+/* Video Component Styles */
+.video {
+  position: relative;
+  background-color: white;
+  width: 100%;
+  max-width: 600px; /* Limit the width for better alignment */
+  height: 90vh; /* Adjust height for consistent display */
+  margin: 0 auto; /* Center the video */
+  scroll-snap-align: start;
+  overflow: hidden; /* Prevent overflow */
+  border-radius: 10px; /* Rounded corners for better aesthetics */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+.video_player {
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the video fills the container */
+  border-radius: 10px; /* Match the container's border radius */
+}
+
+.video_footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  color: white;
+  padding: 10px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.video_sidebar {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Align closer to the edge */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px; /* Add spacing between the icons */
+  transform: translateY(-50%); /* Center the icons vertically */
+  z-index: 10; /* Ensure it appears above the video */
+}
+
+.video_sidebar div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7); /* Semi-transparent background for icons */
+  border-radius: 50%; /* Circular background for icons */
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  color: white;
+}
+
+.video_sidebar div:hover {
+  background: rgba(0, 0, 0, 0.9); /* Darken background on hover */
+}
+
+.video_play_button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  padding: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 20; /* Ensure it appears above everything */
+}
+
+.video_play_button:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .video {
+    max-width: 100%;
+    height: 80vh;
+  }
+
+  .video_sidebar div {
+    width: 40px;
+    height: 40px;
+  }
+
+  .video_footer {
+    font-size: 12px;
+  }
+
+  .video_play_button {
+    padding: 15px;
+  }
+}
