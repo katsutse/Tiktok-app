@@ -22,44 +22,44 @@ const Video = ({
 }) => {
   const videoRef = useRef(null);
 
+  // Toggle play/pause when video is clicked
   const onVideoClick = () => {
-    onPlayPause(videoId); // Toggle the play/pause state for the specific video
+    onPlayPause(videoId);
   };
 
+  // Handle video play/pause based on `isPlaying`
   useEffect(() => {
     if (videoRef.current) {
       if (isPlaying) {
-        videoRef.current
-          .play()
-          .catch((error) => {
-            console.error(`Error playing video (videoId: ${videoId}):`, error);
-          });
+        videoRef.current.play().catch((error) => {
+          console.error(`Error playing video (videoId: ${videoId}):`, error);
+        });
       } else {
-        videoRef.current.pause(); // Ensure video is paused when not playing
+        videoRef.current.pause();
       }
     }
-  }, [isPlaying, videoId]); // Ensure the effect runs when isPlaying or videoId changes
+  }, [isPlaying, videoId]); // Re-run the effect when `isPlaying` or `videoId` changes
 
   return (
     <div className="video">
       <video
         className="video_player"
         loop
-        preload="auto" // Using 'auto' to preload the video as needed
+        preload="auto" // Preload the video as needed
         ref={videoRef}
-        onClick={onVideoClick} // Handle video play/pause when clicked
+        onClick={onVideoClick} // Toggle play/pause on video click
         src={url}
-        muted={!isPlaying} // Optionally mute the video if not playing
-      ></video>
+        muted={!isPlaying} // Mute when not playing
+      />
       <VideoFooter channel={channel} description={description} song={song} />
       <VideoSidebar
         likes={likes}
         messages={messages}
         shares={shares}
         comments={comments}
-        onLike={() => onLike(videoId)} // Pass the onLike function with the videoId
-        onComment={() => onComment(videoId)} // Pass the onComment function with the videoId
-        onShare={() => onShare(videoId)} // Pass the onShare function with the videoId
+        onLike={() => onLike(videoId)} // Handle like
+        onComment={() => onComment(videoId)} // Handle comment
+        onShare={() => onShare(videoId)} // Handle share
       />
       {!isPlaying && <VideoPlayButton onVideoClick={onVideoClick} />} {/* Show play button when not playing */}
     </div>
